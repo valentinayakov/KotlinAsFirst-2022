@@ -145,8 +145,10 @@ fun rookOrBishopThreatens(
  */
 fun triangleKind(a: Double, b: Double, c: Double) = when {
     ((a + b <= c) || (a + c <= b) || (b + c <= a)) -> -1
-    (((b * b + c * c - a * a) / (b * c) < 0) || ((a * a + b * b - c * c) / (a * b) < 0) || ((c * c + a * a - b * b) / (a * c) < 0)) -> 2
-    ((((b * b + c * c - a * a) / (b * c)) == 0.0) || ((a * a + b * b - c * c) / (a * b) == 0.0) || ((c * c + a * a - b * b) / (a * c) == 0.0)) -> 1
+    (((b * b + c * c - a * a) / (b * c) < 0) || ((a * a + b * b - c * c) / (a * b) < 0)) -> 2
+    ((c * c + a * a - b * b) / (a * c) < 0) -> 2
+    ((((b * b + c * c - a * a) / (b * c)) == 0.0) || ((a * a + b * b - c * c) / (a * b) == 0.0)) -> 1
+    ((c * c + a * a - b * b) / (a * c) == 0.0) -> 1
     else -> 0
 }
 
