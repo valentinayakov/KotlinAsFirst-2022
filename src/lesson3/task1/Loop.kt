@@ -107,10 +107,10 @@ fun fib(n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    for (i in 2..n) {
+    for (i in 2..sqrt(n.toDouble()).toInt() + 1) {
         if (n % i == 0) return i
     }
-    return 0
+    return n
 }
 
 /**
@@ -173,13 +173,16 @@ fun lcm(m: Int, n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean {
+fun isCoPrime(m: Int, n: Int): Boolean = nod(m, n) == 1
+
+
+fun nod(m: Int, n: Int): Int {
     var m1 = m
     var n1 = n
     while (m1 != n1) {
         if (m1 > n1) m1 -= n1 else n1 -= m1
     }
-    return m1 == 1
+    return m1
 }
 
 /**

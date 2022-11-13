@@ -3,7 +3,9 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import ru.spbstu.kotlin.typeclass.classes.Monoid.Companion.plus
 import kotlin.math.sqrt
+import lesson3.task1.digitNumber
 
 // Урок 4: списки
 // Максимальное количество баллов = 12
@@ -127,10 +129,8 @@ fun abs(v: List<Double>): Double = TODO()
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double {
-    return if (list.isNotEmpty()) (list.sum() / list.size)
-    else 0.0
-}
+fun mean(list: List<Double>): Double = if (list.isNotEmpty()) (list.sum() / list.size)
+else 0.0
 
 /**
  * Средняя (3 балла)
@@ -254,7 +254,66 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun roman(n: Int): String {
+    var n1 = n
+    var res = ""
+    var k = digitNumber(n1)
+    if (k == 4) {
+        res = "M".repeat(n1 / 1000)
+        k -= 1
+        n1 %= 1000
+    }
+    if (k == 3) {
+        res = res.plus(
+            when (n1 / 100) {
+                1 -> "C"
+                2 -> "CC"
+                3 -> "CCC"
+                4 -> "CD"
+                5 -> "D"
+                6 -> "DC"
+                7 -> "DCC"
+                8 -> "DCCC"
+                9 -> "CM"
+                else -> ""
+            }
+        )
+        k -= 1
+        n1 %= 100
+    }
+    if (k == 2) {
+        res = res.plus(
+            when (n1 / 10) {
+                1 -> "X"
+                2 -> "XX"
+                3 -> "XXX"
+                4 -> "XL"
+                5 -> "L"
+                6 -> "LX"
+                7 -> "LXX"
+                8 -> "LXXX"
+                9 -> "XC"
+                else -> ""
+            }
+        )
+        n1 %= 10
+    }
+    res = res.plus(
+        when (n1) {
+            1 -> "I"
+            2 -> "II"
+            3 -> "III"
+            4 -> "IV"
+            5 -> "V"
+            6 -> "VI"
+            7 -> "VII"
+            8 -> "VIII"
+            9 -> "IX"
+            else -> ""
+        }
+    )
+    return res
+}
 
 /**
  * Очень сложная (7 баллов)
@@ -263,4 +322,83 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian(n: Int): String {
+    var res = ""
+    if (n >= 1000) {
+        res += thousands(n / 1000, true)
+        val k = n / 1000 % 100
+        res = res.plus(
+            when {
+                (k in 11..19 || k % 10 in 5..9 || k % 10 == 0) -> "тысяч "
+                (k % 10 == 1) -> "тысяча "
+                else -> "тысячи "
+            }
+        )
+        res += thousands(n % 1000, false)
+    } else res += thousands(n, false)
+    return res.trim()
+}
+
+fun thousands(n: Int, t: Boolean): String {
+    var res = ""
+    res = res.plus(
+        when (n / 100) {
+            1 -> "сто "
+            2 -> "двести "
+            3 -> "триста "
+            4 -> "четыреста "
+            5 -> "пятьсот "
+            6 -> "шестьсот "
+            7 -> "семьсот "
+            8 -> "восемьсот "
+            9 -> "девятьсот "
+            else -> ""
+        }
+    )
+    if ((10 < n % 100) && (20 > n % 100)) {
+        res = res.plus(
+            when (n % 100) {
+                11 -> "одиннадцать "
+                12 -> "двенадцать "
+                13 -> "тринадцать "
+                14 -> "четырнадцать "
+                15 -> "пятнадцать "
+                16 -> "шестнадцать "
+                17 -> "семнадцать "
+                18 -> "восемнадцать "
+                19 -> "девятнадцать "
+                else -> ""
+            }
+        )
+    } else {
+        res = res.plus(
+            when (n % 100 / 10) {
+                1 -> "десять "
+                2 -> "двадцать "
+                3 -> "тридцать "
+                4 -> "сорок "
+                5 -> "пятьдесят "
+                6 -> "шестьдесят "
+                7 -> "семьдесят "
+                8 -> "восемьдесят "
+                9 -> "девяносто "
+                else -> ""
+            }
+        )
+        res = res.plus(
+            when (n % 10) {
+                1 -> if (t) "одна " else "один "
+                2 -> if (t) "две " else "два "
+                3 -> "три "
+                4 -> "четыре "
+                5 -> "пять "
+                6 -> "шесть "
+                7 -> "семь "
+                8 -> "восемь "
+                9 -> "девять "
+                else -> ""
+            }
+        )
+    }
+    return res
+}
