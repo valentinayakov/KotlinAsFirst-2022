@@ -297,7 +297,15 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  */
 
 
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    val mapOfNumbers = list.withIndex().associateBy({ it.value }, { it.index })
+    for ((key, index) in mapOfNumbers)
+        if (number - key in mapOfNumbers.filterKeys { it != key }) return Pair(
+            index,
+            mapOfNumbers[number - key]
+        ) as Pair<Int, Int>
+    return Pair(-1, -1)
+}
 
 /**
  * Очень сложная (8 баллов)
