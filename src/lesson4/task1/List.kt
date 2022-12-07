@@ -256,15 +256,15 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  */
 fun roman(n: Int): String {
     var n1 = n
-    var res = ""
+    val res = StringBuilder("")
     var k = digitNumber(n1)
     if (k == 4) {
-        res = "M".repeat(n1 / 1000)
+        res.append("M".repeat(n1 / 1000))
         k -= 1
         n1 %= 1000
     }
     if (k == 3) {
-        res = res.plus(
+        res.append(
             when (n1 / 100) {
                 1 -> "C"
                 2 -> "CC"
@@ -282,7 +282,7 @@ fun roman(n: Int): String {
         n1 %= 100
     }
     if (k == 2) {
-        res = res.plus(
+        res.append(
             when (n1 / 10) {
                 1 -> "X"
                 2 -> "XX"
@@ -298,7 +298,7 @@ fun roman(n: Int): String {
         )
         n1 %= 10
     }
-    res = res.plus(
+    res.append(
         when (n1) {
             1 -> "I"
             2 -> "II"
@@ -312,7 +312,7 @@ fun roman(n: Int): String {
             else -> ""
         }
     )
-    return res
+    return res.toString()
 }
 
 /**
@@ -323,25 +323,25 @@ fun roman(n: Int): String {
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
-    var res = ""
+    val res = StringBuilder("")
     if (n >= 1000) {
-        res += thousands(n / 1000, true)
+        res.append(thousands(n / 1000, true))
         val k = n / 1000 % 100
-        res = res.plus(
+        res.append(
             when {
                 (k in 11..19 || k % 10 in 5..9 || k % 10 == 0) -> "тысяч "
                 (k % 10 == 1) -> "тысяча "
                 else -> "тысячи "
             }
         )
-        res += thousands(n % 1000, false)
-    } else res += thousands(n, false)
-    return res.trim()
+        res.append(thousands(n % 1000, false))
+    } else res.append(thousands(n, false))
+    return res.trim().toString()
 }
 
-fun thousands(n: Int, t: Boolean): String {
-    var res = ""
-    res = res.plus(
+fun thousands(n: Int, t: Boolean): StringBuilder {
+    var res = StringBuilder("")
+    res.append(
         when (n / 100) {
             1 -> "сто "
             2 -> "двести "
@@ -356,7 +356,7 @@ fun thousands(n: Int, t: Boolean): String {
         }
     )
     if ((10 < n % 100) && (20 > n % 100)) {
-        res = res.plus(
+        res.append(
             when (n % 100) {
                 11 -> "одиннадцать "
                 12 -> "двенадцать "
@@ -371,7 +371,7 @@ fun thousands(n: Int, t: Boolean): String {
             }
         )
     } else {
-        res = res.plus(
+        res.append(
             when (n % 100 / 10) {
                 1 -> "десять "
                 2 -> "двадцать "
@@ -385,7 +385,7 @@ fun thousands(n: Int, t: Boolean): String {
                 else -> ""
             }
         )
-        res = res.plus(
+        res.append(
             when (n % 10) {
                 1 -> if (t) "одна " else "один "
                 2 -> if (t) "две " else "два "

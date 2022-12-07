@@ -123,6 +123,7 @@ class Tests {
     fun containsIn() {
         assertTrue(containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")))
         assertFalse(containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")))
+        assertFalse(containsIn(mapOf("a" to "z"), mapOf("c" to "zee", "b" to "sweet")))
     }
 
     @Test
@@ -188,6 +189,37 @@ class Tests {
                 mapOf("Emergency" to "911", "Police" to "02")
             )
         )
+        assertEquals(
+            mapOf(
+                "X^" to "qwerty",
+                "." to "asdfg, ",
+                " " to "zxcv",
+                "" to "tyu, .",
+                "oUMIB" to "__RE",
+                "@RTS" to "HGJKL",
+                "|(FTY" to "{YGU",
+                "WE%" to "4+HUIG",
+                ")" to "E0}N",
+                "7AY" to "ZY5W",
+                "/" to "WZ32",
+                ";" to "TDCERT"
+            ),
+            mergePhoneBooks(
+                mapOf("X^" to "qwerty", "." to "asdfg", " " to "zxcv", "" to "tyu"),
+                mapOf(
+                    "oUMIB" to "__RE",
+                    "@RTS" to "HGJKL",
+                    "|(FTY" to "{YGU",
+                    "WE%" to "4+HUIG",
+                    "." to "",
+                    ")" to "E0}N",
+                    "7AY" to "ZY5W",
+                    "" to ".",
+                    "/" to "WZ32",
+                    ";" to "TDCERT"
+                )
+            )
+        )
     }
 
     @Test
@@ -225,6 +257,12 @@ class Tests {
             findCheapestStuff(
                 mapOf("Мария" to ("печенье" to 20.0), "Орео" to ("печенье" to 100.0)),
                 "печенье"
+            )
+        )
+        assertNull(
+            findCheapestStuff(
+                mapOf("" to ("" to -5.169878828456423e-26)),
+                "?\\n^z]tjQ2,,,~Z\\\"A-.^:6Mbv})V[6U>hoE8uWL+\\tU:a'1foO5y4c\\nd8\\n0\$&d2@glXzX%u\$8K82]Mk{X_\\\\go4Ou'%.GS%a@}!EeG=38"
             )
         )
     }
