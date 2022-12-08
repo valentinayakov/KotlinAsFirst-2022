@@ -334,7 +334,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
     val a = treasures.toList().sortedBy { it.second.second }
     val res = mutableSetOf<String>()
     var s = 0
-    for ((first, second) in a) {
+    for ((first, second) in a.reversed()) {
         val d = second.first
         if ((s + d) <= capacity) {
             res.add(first)
