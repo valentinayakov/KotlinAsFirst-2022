@@ -2,6 +2,8 @@
 
 package lesson5.task1
 
+import kotlin.math.max
+
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
 // Рекомендуемое количество баллов = 9
@@ -194,9 +196,9 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
     var res: String? = null
-    var pr = 10000000.0
+    var pr = 0.0
     for ((name, price) in stuff) {
-        if ((price.first == kind) && (pr > price.second)) {
+        if ((price.first == kind) && (pr >= price.second || pr == 0.0)) {
             res = name
             pr = price.second
         }
@@ -302,10 +304,10 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     val map = mutableMapOf<Int, Int>()
     for (i in list.indices) {
         val diff = number - list[i]
-        if (diff in map) return Pair(map[diff]!!, i)
+        if (diff in map) return map[diff]!! to i
         map[list[i]] = i
     }
-    return Pair(-1, -1)
+    return -1 to -1
 }
 
 /**
@@ -331,15 +333,29 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
  */
 
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
-    val a = treasures.toList().sortedBy { it.second.second }
     val res = mutableSetOf<String>()
-    var s = 0
-    for ((first, second) in a.reversed()) {
-        val d = second.first
-        if ((s + d) <= capacity) {
-            res.add(first)
-            s += d
+    val weightsL = mutableListOf<Int>()
+    val pricesL = mutableListOf<Int>()
+    val treasuresL = mutableListOf<String>()
+    val prices = Array(treasures.size + 1) { Array(capacity + 1) { 0 } }
+    for ((name, info) in treasures) {
+        pricesL.add(info.second)
+        weightsL.add(info.first)
+        treasuresL.add(name)
+    }
+    var s = treasures.size
+    for (k in 1..s)
+        for (m in 0..capacity)
+            if (m >= weightsL[k - 1]) prices[k][m] =
+                max(prices[k - 1][m], prices[k - 1][m - weightsL[k - 1]] + pricesL[k - 1])
+            else prices[k][m] = prices[k - 1][m]
+    var d = capacity
+    while (s > 0) {
+        if (prices[s][d] != prices[s - 1][d]) {
+            res.add(treasuresL[s - 1])
+            d -= weightsL[s - 1]
         }
+        s--
     }
     return res
 }
