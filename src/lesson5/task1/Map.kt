@@ -96,7 +96,8 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *   buildGrades(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5))
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
-fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = grades.toList().groupBy({ it.second }, { it.first })
+fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> =
+    grades.toList().groupBy({ it.second }, { it.first })
 
 /**
  * Простая (2 балла)
@@ -298,12 +299,12 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
 
 
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
-    val mapOfNumbers = list.withIndex().associateBy({ it.value }, { it.index })
-    for ((key, index) in mapOfNumbers)
-        if (number - key in mapOfNumbers.filterKeys { it != key }) return Pair(
-            index,
-            mapOfNumbers[number - key]
-        ) as Pair<Int, Int>
+    val map = mutableMapOf<Int, Int>()
+    for (i in list.indices) {
+        val diff = number - list[i]
+        if (diff in map) return Pair(map[diff]!!, i)
+        map[list[i]] = i
+    }
     return Pair(-1, -1)
 }
 
