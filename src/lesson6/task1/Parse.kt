@@ -125,7 +125,7 @@ fun dateDigitToStr(digital: String): String = TODO()
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
 fun flattenPhoneNumber(phone: String): String =
-    if (Regex("""([^+()0-9\s-]|\(\)|\n)""").find(phone)?.value != null) ""
+    if (Regex("""([^+()0-9\s-]|\(\)|\n)""").find(phone) != null) ""
     else Regex("[() -]").replace(phone, "")
 
 /**
@@ -138,7 +138,8 @@ fun flattenPhoneNumber(phone: String): String =
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int = if (!Regex("""((\d{3}|%|-)\s?)+\d+""").matches(jumps)) -1
+else Regex("""\d{3}""").findAll(jumps).map { it.value.toInt() }.toList().max()
 
 /**
  * Сложная (6 баллов)
