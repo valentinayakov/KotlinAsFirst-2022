@@ -192,14 +192,20 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * Сложная (6 баллов)
  *
  * Строка содержит названия товаров и цены на них в формате вида
- * "Хлеб 39.9; Молоко 62; Курица 184.0; Конфеты 89.9".
+ * "Хлеб 39.9; Молоко 62.5; Курица 184.0; Конфеты 89.9".
  * То есть, название товара отделено от цены пробелом,
  * а цена отделена от названия следующего товара точкой с запятой и пробелом.
  * Вернуть название самого дорогого товара в списке (в примере это Курица),
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше нуля либо равны нулю.
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    if (!Regex("""(; [^A-Za-z. \d;]+ \d+\.?\d*)+""").matches("; $description")) return ""
+    val prices = Regex("""\d+\.?\d*""").findAll(description).map { it.value.toDouble() }.toList()
+    val names = Regex("""[^A-Za-z. \d;]+""").findAll(description).map { it.value }.toList()
+    val iOfMaxPrice = prices.indexOf(prices.max())
+    return names[iOfMaxPrice]
+}
 
 /**
  * Сложная (6 баллов)
