@@ -124,7 +124,9 @@ fun dateDigitToStr(digital: String): String = TODO()
  *
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String =
+    if (Regex("""([^+()0-9\s-]|\(\))""").find(phone)?.value != null) ""
+    else Regex("[()  -]").replace(phone, "")
 
 /**
  * Средняя (5 баллов)
