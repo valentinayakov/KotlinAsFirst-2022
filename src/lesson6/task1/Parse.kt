@@ -200,10 +200,11 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * Все цены должны быть больше нуля либо равны нулю.
  */
 fun mostExpensive(description: String): String {
-    if (!Regex("""(; [^A-Za-z. \d;]+ \d+\.?\d*)+""").matches("; $description")) return ""
     val prices = Regex("""\d+\.?\d*""").findAll(description).map { it.value.toDouble() }.toList()
+    if (!Regex("""(; [^A-Za-z. \d;]+ \d+\.?\d*)+""").matches("; $description") || prices.min() <= 0) return ""
     val names = Regex("""[^A-Za-z. \d;]+""").findAll(description).map { it.value }.toList()
     val iOfMaxPrice = prices.indexOf(prices.max())
+    if (0.0 in prices) return "Any good with price 0.0"
     return names[iOfMaxPrice]
 }
 
