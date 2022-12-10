@@ -339,8 +339,8 @@ fun russian(n: Int): String {
     return res.trim().toString()
 }
 
-fun thousands(n: Int, t: Boolean): StringBuilder {
-    var res = StringBuilder("")
+fun thousands(n: Int, t: Boolean): String {
+    val res = StringBuilder("")
     res.append(
         when (n / 100) {
             1 -> "сто "
@@ -400,5 +400,5 @@ fun thousands(n: Int, t: Boolean): StringBuilder {
             }
         )
     }
-    return res
+    return res.toString()
 }
