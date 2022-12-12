@@ -208,8 +208,9 @@ fun firstDuplicateIndex(str: String): Int {
  */
 fun mostExpensive(description: String): String {
     val prices = Regex("""\d+\.?\d*""").findAll(description).map { it.value.toDouble() }.toList()
-    if (prices.min() == 0.0) return "Any good with price 0.0"
-    if (!Regex("""(; [^A-Za-z. \d;]+ \d+\.?\d*)+""").matches("; $description") || prices.min() <= 0) return ""
+    if (!Regex("""((; [^A-Za-z. \d;]+ \d+\.?\d*)+)|(; ([^A-Za-z. \d;]+ \d+\.?\d*)+)""").matches("; $description")
+        || prices.min() < 0
+    ) return ""
     val names = Regex("""[^A-Za-z. \d;]+""").findAll(description).map { it.value }.toList()
     val iOfMaxPrice = prices.indexOf(prices.max())
     return names[iOfMaxPrice]
