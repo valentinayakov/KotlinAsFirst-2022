@@ -3,7 +3,6 @@
 package lesson7.task1
 
 import java.io.File
-import java.util.*
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -256,15 +255,14 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     val dict = File(inputName).readLines()
-    val maxLenWords = dict.filter { it.length == dict.max().length }
     val res = mutableListOf<String>()
-    for (word in maxLenWords) {
+    for (word in dict) {
         val currW = word.lowercase().split("").joinToString()
         if (word.lowercase().split("").toSet().joinToString() == currW.substring(0, currW.length - 2)) {
             res.add(word)
         }
     }
-    writer.write(res.joinToString(", "))
+    writer.write(res.filter { it.length == res.max().length }.joinToString(", "))
     writer.close()
 }
 
