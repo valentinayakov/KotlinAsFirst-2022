@@ -164,7 +164,45 @@ fun centerFile(inputName: String, outputName: String) {
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
 fun alignFileByWidth(inputName: String, outputName: String) {
-    TODO()
+    val writer = File(outputName).bufferedWriter()
+    val lines = File(inputName).readLines().map { it.trim() }
+    val lenOfMaxLine = lines.maxBy { it.length }.length
+    for (line in lines) {
+        var count = 1
+        if (line.isEmpty()) {
+            writer.newLine()
+        } else {
+            val words = line.replace(Regex("(\\s)\\s+"), " ").split(" ")
+            val wordsSize = words.joinToString(" ").length
+            if (words.size == 1) {
+                writer.write(words[0])
+                writer.newLine()
+            } else {
+                val remain = lenOfMaxLine - wordsSize
+                val c = remain % (words.size - 1)
+                if (remain == 0) {
+                    writer.write(line)
+                    writer.newLine()
+                } else {
+                    if (c == 0) {
+                        writer.write(words.joinToString(" ".repeat(remain / (words.size - 1) + 1)))
+                        writer.newLine()
+                    } else {
+                        while (count <= c) {
+                            writer.write(words[count - 1])
+                            writer.write(" ".repeat(remain / (words.size - 1) + 2))
+                            count++
+                        }
+                        writer.write(
+                            words.subList(c, words.size).joinToString(" ".repeat(remain / (words.size - 1) + 1))
+                        )
+                        writer.newLine()
+                    }
+                }
+            }
+        }
+    }
+    writer.close()
 }
 
 /**
@@ -479,6 +517,29 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  *
  */
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
+    /** val writer = File(outputName).bufferedWriter()
+    writer.write(" $lhv | $rhv")
+    writer.newLine()
+    var numbers = "$lhv".toList().map { it.digitToInt() }
+    var line = 1
+    var remain = ""
+    var i = 1
+    while (numbers.isNotEmpty()) {
+    remain = (remain.toInt() * 10 + numbers[0]).toString()
+    numbers = numbers.subList(i, numbers.size)
+    i++
+    if (remain.toInt() >= rhv) {
+    remain = (remain.toInt() % rhv).toString()
+    if (line == 1) {
+    writer.write("-$remain" + " ".repeat(lhv.toString().length + 3 - remain.length) + "${lhv / rhv}")
+    line++
+    writer.newLine()
+    }
+    writer.write("-".repeat(remain.length + 1))
+    }
+    }
+    writer.close()
+     */
     TODO()
 }
 
