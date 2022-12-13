@@ -262,7 +262,7 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
             res.add(word)
         }
     }
-    writer.write(res.filter { it.length == res.max().length }.joinToString(", "))
+    writer.write(res.filter { s -> s.length == res.maxBy { it.length }.length }.joinToString(", "))
     writer.close()
 }
 
