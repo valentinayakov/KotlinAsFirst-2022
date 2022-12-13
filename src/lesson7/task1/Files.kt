@@ -166,6 +166,7 @@ fun centerFile(inputName: String, outputName: String) {
 fun alignFileByWidth(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     val lines = File(inputName).readLines().map { it.trim() }
+    if (lines.isEmpty()) writer.newLine()
     val lenOfMaxLine = lines.maxBy { it.length }.length
     for (line in lines) {
         var count = 1
