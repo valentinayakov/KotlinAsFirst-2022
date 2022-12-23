@@ -4,6 +4,7 @@ package lesson6.task1
 
 import lesson2.task2.daysInMonth
 import java.lang.IllegalArgumentException
+import java.lang.IllegalStateException
 
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
@@ -266,3 +267,69 @@ fun fromRoman(roman: String): Int = TODO()
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+
+/**
+ * На вход подаётся изменяемый список places, содержащий информацию
+ * о состоянии мест в зале в следующем виде: i-ый элемент списка
+ * описывает состояние мест в i-ом ряду в зале.
+ * Состояние мест в ряду также представлено списком, содержащим true,
+ * если место занято, и false если свободно.
+ *
+ * Например:
+ * [[true,false,false,false,true,false],[true,false,true,false]]
+ *
+ * Также, на вход подаётся ассоциативный массив requests, содержащий
+ * информацию о запросах на места. Ключ это идентификатор зрителя,
+ * а значение это пара из номера ряда и количества заказанных мест.
+ *
+ * Например:
+ * {"Вася" = (0, 2), "Петя" = (1, 1)}
+ * В примере Вася хочет 2 места в ряду 0, а Петя одно место в ряду 1.
+ *
+ * Необходимо каждому зрителю найти необходимое количество мест в зале
+ * и зарезервировать их. Места могут располагаться НЕ рядом.
+ * Требуется вернуть для каждого зрителя список зарезервированных
+ * для него мест, а также внести изменения в переданный
+ * на вход список, содержащий информацию о состоянии мест в зале.
+ *
+ * Если какому-либо из зрителей невозможно выделить необходимое
+ * количество мест требуется выбросить IllegalStateException.
+ *
+ * Для данных из примера результат работы может быть следующим:
+ * Зарезервированные места:
+ * {"Вася" = [1, 5], "Петя" = [3]}
+ * Изменённый список с информацией о местах:
+ * [[true,true,false,false,true,true],[true,false,true,true]]
+ *
+ * Имя функции и тип результата функции предложить самостоятельно;
+ * в задании указан тип Collection<Any>, то есть коллекция объектов
+ * произвольного типа, можно (и нужно) изменить как вид коллекции,
+ * так и тип её элементов.
+ * Кроме функции, следует написать тесты,
+ * подтверждающие её работоспособность.
+ */
+
+
+fun myFun(
+    places: MutableList<MutableList<Boolean>>,
+    requests: Map<String, Pair<Int, Int>>
+): Pair<MutableList<Pair<String, List<Int>>>, MutableList<MutableList<Boolean>>> {
+    val resReq = mutableListOf<Pair<String, List<Int>>>()
+    for ((name, reqs) in requests) {
+        val itsPlaces = mutableListOf<Int>()
+        var count = 0
+        val countpl = reqs.second
+        val p = reqs.first
+        for (i in places[p].indices) {
+            if (!places[p][i] && (count != countpl)) {
+                count++
+                places[p][i] = true
+                itsPlaces.add(i)
+            }
+        }
+        if (count < countpl) throw IllegalStateException()
+        resReq.add(name to itsPlaces)
+    }
+    return Pair(resReq, places)
+}
+

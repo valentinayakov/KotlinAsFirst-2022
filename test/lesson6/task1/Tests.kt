@@ -153,4 +153,39 @@ class Tests {
         assertThrows(IllegalArgumentException::class.java) { computeDeviceCells(10, "+>+>[+>", 3) }
         assertThrows(IllegalStateException::class.java) { computeDeviceCells(20, ">>>>>>>>>>>>>", 12) }
     }
+
+    @Test
+    fun myFun() {
+        assertEquals(
+            Pair(
+                listOf("Вася" to listOf(1, 2), "Петя" to listOf(1)),
+                listOf(listOf(true, true, true, false, true, false), listOf(true, true, true, false))
+            ),
+            myFun(
+                mutableListOf(
+                    mutableListOf(true, false, false, false, true, false),
+                    mutableListOf(true, false, true, false)
+                ),
+                mapOf("Вася" to Pair(0, 2), "Петя" to Pair(1, 1))
+            )
+        )
+        assertThrows(IllegalStateException::class.java) {
+            myFun(
+                mutableListOf(
+                    mutableListOf(true, true, true, true, true, false),
+                    mutableListOf(true, false, true, false)
+                ),
+                mapOf("Вася" to Pair(0, 2), "Петя" to Pair(1, 1))
+            )
+        }
+        assertThrows(IndexOutOfBoundsException::class.java) {
+            myFun(
+                mutableListOf(
+                    mutableListOf(true, true, true, true, true, false),
+                    mutableListOf(true, false, true, false)
+                ),
+                mapOf("Вася" to Pair(-1, 2), "Петя" to Pair(1, 1))
+            )
+        }
+    }
 }
